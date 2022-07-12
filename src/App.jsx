@@ -19,15 +19,15 @@ async function storeFiles (files) {
   return cid
 }
 
+//setFileName(selectedFile[0].name);
 
 function App() {
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [reg_no, setreg_no] = useState("");
   const [selectedFile, setSelectedFile] = useState();
-  const [ipfsHash, setIpfsHash] = useState("");
   const [contractAddress, setContractAddress] = useState("");
  
-  const deployDocument = async (name, password, ipfsHash) => {
+  const deployDocument = async (name, reg_no, ipfsHash) => {
     try {
       const {ethereum} = window;
       if(ethereum) {
@@ -41,8 +41,8 @@ function App() {
           );
         const certificate = await certificationFactory.deploy(
           name,
-          password,
-          ipfsHash
+          reg_no,
+          ipfsHash,
         );
           await certificate.deployed();
           setContractAddress(certificate.address);
@@ -68,19 +68,23 @@ function App() {
       alert("Enter name")
       return (null)
     }
-    if (!password) {
-      alert("Enter password")
+    if (!reg_no) {
+      alert("Enter reg_no")
       return (null)
     }
-    const cid = await storeFiles(selectedFile);
-    await deployDocument(name, password, cid);
+    try {
+      const cid = await storeFiles(selectedFile);
+      await deployDocument(name, reg_no, cid);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={name} placeholder="name" onChange={(e) => setName(e.target.value)}/>
-        <input type="text" value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)}/>
+        <input type="text" value={name} placeholder="Name" onChange={(e) => setName(e.target.value)}/>
+        <input type="text" value={reg_no} placeholder="Registration No" onChange={(e) => setreg_no(e.target.value)}/>
         <input type="file" placeholder="upload" onChange={(e) => setSelectedFile(e.target.files)}/>
         <button type='submit'>Submit</button>
       </form> 

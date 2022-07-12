@@ -3,16 +3,16 @@ pragma solidity ^0.8.0;
 
 contract Certification {
     string public name;
-    string public password;
+    string public reg_no;
     string public ipfsHash;
 
     constructor(
         string memory _name,
-        string memory _password,
+        string memory _reg_no,
         string memory _ipfsHash
     ) {
         name = _name;
-        password = _password;
+        reg_no = _reg_no;
         ipfsHash = _ipfsHash;
     }
 }
